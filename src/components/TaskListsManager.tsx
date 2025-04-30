@@ -4,6 +4,7 @@
 import React, { useState } from 'react';
 import { useTasksLists } from '@/hooks/useTaskLists';
 import TodoList from './TodoList';
+import EditableSpan from './EditableSpan';
 
 const TaskListsManager: React.FC = () => {
   const [initialLists] = useState([
@@ -47,7 +48,8 @@ const TaskListsManager: React.FC = () => {
     addTaskToList,
     toggleTask,
     deleteTask,
-    deleteTaskList
+    deleteTaskList,
+    updateName
   } = useTasksLists(initialLists);
 
   const [newListName, setNewListName] = useState('');
@@ -62,8 +64,13 @@ const TaskListsManager: React.FC = () => {
     }
   }
 
+    // Обработчик изменения имени списка
+    const handleListNameChange = (listId: string, newName: string) => {
+      updateName(listId, newName);
+    };
+
   return (
-    <div className="max-w-2xl mx-auto p-6">
+    <div className=" max-w-2xl mx-auto p-6 ">
       <h1 className="text-black text-4xl font-bold text-center mb-8">Менеджер списков задач</h1>
       
       <form onSubmit={handleAddTheme} className="mb-8">
@@ -88,7 +95,8 @@ const TaskListsManager: React.FC = () => {
         {taskLists.map(list => (
           <div key={list.id} className="bg-gray-50 p-6 rounded-lg shadow">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-2xl font-bold">{list.name}</h2>
+               
+              <h2 className="text-black text-2xl font-bold"><EditableSpan name={list.name}/></h2>
               <button
                 onClick={() => deleteTaskList(list.id)}
                 className="px-3 py-1 text-sm text-white bg-red-500 rounded hover:bg-red-600"

@@ -1,5 +1,6 @@
 import { TaskType } from '@/types/taskTypes';
 import React from 'react';
+import EditableSpan from './EditableSpan';
 
 interface TaskProps extends TaskType {
   onToggle: (id: string) => void;
@@ -17,7 +18,7 @@ const Task: React.FC<TaskProps> = ({ id, text, completed, onToggle, onDelete }) 
           className="w-4 h-4 mr-3 cursor-pointer"
         />
         <span className={`text-lg ${completed ? 'line-through text-gray-500' : 'text-gray-800'}`}>
-          {text}
+        <EditableSpan name={text}/>
         </span>
       </div>
       <button
