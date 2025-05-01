@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Task from './Task';
-import { TodoListProps } from '../types/taskTypes';
+import { FilterType, TodoListProps } from '../types/taskTypes';
 
 
 const TodoList: React.FC<TodoListProps> = ({ 
@@ -21,6 +21,21 @@ const TodoList: React.FC<TodoListProps> = ({
       setInputText('');
     }
   };
+
+  const [filter, setFilter] = useState<FilterType>('all');
+
+  const getFilteredTasks = () => {
+    switch (filter) {
+      case 'completed':
+        return tasks.filter(task => task.completed);
+      case 'active':
+        return tasks.filter(task => !task.completed);
+      default:
+        return tasks;
+    }
+  };
+
+  const filteredTasks = getFilteredTasks();
 
   return (
     <div>
@@ -43,8 +58,8 @@ const TodoList: React.FC<TodoListProps> = ({
       </form>
 
       <div className="space-y-2">
-        {tasks.length > 0 ? (
-          tasks.map((task) => (
+        {filteredTasks.length > 0 ? (
+          filteredTasks.map((task) => (
             <Task
               key={task.id}
               id={task.id}
@@ -55,10 +70,58 @@ const TodoList: React.FC<TodoListProps> = ({
             />
           ))
         ) : (
-          <p className="text-center py-4 text-gray-500">Задач пока нет</p>
+          <p className="text-center py-4 text-gray-500">
+            {filter === 'all' 
+              ? 'Задач пока нет' 
+              : filter === 'completed' 
+                ? 'Нет выполненных задач' 
+                : 'Нет активных задач'}
+          </p>
         )}
       </div>
+
+       {/* Добавляем панель фильтров */}
+       <div className="flex justify-center space-x-2 mt-6">
+        <button
+          onClick={() => setFilter('all')}
+          className={`px-3 py-1 text-sm rounded transition-colors ${
+            filter === 'all'
+            ? 'bg-blue-500 text-white'
+            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+          }`}
+        >
+          Все
+        </button>
+        <button
+          onClick={() => setFilter('active')}
+          className={`px-3 py-1 text-sm rounded transition-colors ${
+            filter === 'active'
+            ? 'bg-blue-500 text-white'
+            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+          }`}
+        >
+          Активные
+        </button>
+        <button
+          onClick={() => setFilter('completed')}
+          className={`px-3 py-1 text-sm rounded transition-colors ${
+            filter === 'completed'
+            ? 'bg-blue-500 text-white'
+            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+          }`}
+        >
+          Выполненные
+        </button>
+      </div>
+
+      {/* Счетчик задач */}
+      <div className="mt-3 text-center text-sm text-gray-500">
+        Всего: {tasks.length} | 
+        Выполнено: {tasks.filter(task => task.completed).length} | 
+        Осталось: {tasks.filter(task => !task.completed).length}
+      </div>
     </div>
+    
   );
 };
 

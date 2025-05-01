@@ -10,6 +10,8 @@ export type TaskType = {
   completed: boolean;
 };
 
+export type FilterType = 'all' | 'active' | 'completed';
+
 
 //   export interface TodoItem {
 //     id: number;
