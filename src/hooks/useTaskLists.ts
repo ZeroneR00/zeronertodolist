@@ -1,15 +1,47 @@
 "use client"
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TaskListType, TaskType } from '../types/taskTypes';
 import { v4 as uuidv4 } from 'uuid';
+
+// Ключ для хранения в localStorage
+const STORAGE_KEY = 'todo-lists-data';
 
 
 export function useTasksLists(initialTasks: TaskListType[] = []) {
 
-  const [taskLists, setTaskLists] = useState<TaskListType[]>(initialTasks);
+    // Функция для загрузки данных из localStorage
+    const loadFromStorage = (): TaskListType[] => {
+      // Проверка доступности localStorage (выполняется только на клиенте)
+      if (typeof window !== 'undefined') {
+        // Попытка получить данные из localStorage
+        const savedData = localStorage.getItem(STORAGE_KEY);
+        console.log(savedData + 'первое')
+        // Если данные найдены, парсим их из строки JSON и возвращаем
+        if (savedData) {
+          try {
+            return JSON.parse(savedData);
+          } catch (error) {
+            console.error('Ошибка при загрузке данных из localStorage:', error);
+          }
+        }
+        console.log(savedData + 'второе')
+      }
+      
+      // Возвращаем начальные задачи, если ничего не найдено в localStorage
+      return initialTasks;
+    };
+
+  const [taskLists, setTaskLists] = useState<TaskListType[]>(loadFromStorage());
   const [currentListId, setCurrentListId] = useState<string | null>(null);
 
+  // Эффект для сохранения в localStorage при изменении taskLists
+  useEffect(() => {
+    // Убедимся, что мы выполняем это только на клиенте
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(taskLists));
+    }
+  }, [taskLists]); // Зависимость от taskLists, эффект выполнится при изменении списков
 
   //   // Создание новой темы/списка задач
   const addTaskList = (name: string) => {
@@ -76,8 +108,16 @@ export function useTasksLists(initialTasks: TaskListType[] = []) {
     setTaskLists(prevLists => prevLists.filter(list => list.id !== id));
   }
 
-  const filter = ( id: string, currentStatus: boolean ) => {
-    
+   // Обновление текста задачи
+   const updateTaskText = (listId: string, taskId: string, newText: string) => {
+    setTaskLists(prevLists => prevLists.map(list => list.id === listId
+      ? {
+        ...list, tasks: list.tasks.map(task => task.id === taskId
+          ? { ...task, text: newText }
+          : task
+        )
+      }
+    : list));
   }
   
 
@@ -91,7 +131,8 @@ export function useTasksLists(initialTasks: TaskListType[] = []) {
     toggleTask,
     deleteTask,
     deleteTaskList,
-    updateName
+    updateName,
+    updateTaskText
   };
 
 }

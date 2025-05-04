@@ -24,4 +24,5 @@ export interface TodoListProps {
   onAddTask: (text: string) => void;
   onToggleTask: (taskId: string) => void;
   onDeleteTask: (taskId: string) => void;
+  onUpdateTaskText?: (taskId: string, newText: string) => void;
 }

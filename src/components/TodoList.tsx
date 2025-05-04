@@ -4,13 +4,17 @@ import React, { useState } from 'react';
 import Task from './Task';
 import { FilterType, TodoListProps } from '../types/taskTypes';
 
+interface ExtendedTodoListProps extends TodoListProps {
+  onUpdateTaskText?: (taskId: string, newText: string) => void;
+}
 
-const TodoList: React.FC<TodoListProps> = ({ 
+const TodoList: React.FC<ExtendedTodoListProps> = ({ 
   tasks, 
   listId, 
   onAddTask, 
   onToggleTask, 
-  onDeleteTask 
+  onDeleteTask,
+  onUpdateTaskText 
 }) => {
   const [inputText, setInputText] = useState('');
 
@@ -24,18 +28,13 @@ const TodoList: React.FC<TodoListProps> = ({
 
   const [filter, setFilter] = useState<FilterType>('all');
 
-  const getFilteredTasks = () => {
-    switch (filter) {
-      case 'completed':
-        return tasks.filter(task => task.completed);
-      case 'active':
-        return tasks.filter(task => !task.completed);
-      default:
-        return tasks;
-    }
-  };
-
-  const filteredTasks = getFilteredTasks();
+  // Фильтрация задач в зависимости от выбранного фильтра
+  const filteredTasks = tasks.filter(task => {
+    if (filter === 'all') return true;
+    if (filter === 'active') return !task.completed;
+    if (filter === 'completed') return task.completed;
+    return true;
+  });
 
   return (
     <div>

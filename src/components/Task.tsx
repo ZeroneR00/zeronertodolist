@@ -5,9 +5,24 @@ import EditableSpan from './EditableSpan';
 interface TaskProps extends TaskType {
   onToggle: (id: string) => void;
   onDelete: (id: string) => void;
+  onTextChange?: (id: string, newText: string) => void; // Добавляем новый обработчик
 }
 
-const Task: React.FC<TaskProps> = ({ id, text, completed, onToggle, onDelete }) => {
+const Task: React.FC<TaskProps> = ({
+  id,
+  text,
+  completed,
+  onToggle,
+  onDelete,
+  onTextChange
+}) => {
+  // Обработчик изменения текста задачи
+  const handleTextChange = (newText: string) => {
+    if (onTextChange) {
+      onTextChange(id, newText);
+    }
+  };
+
   return (
     <div className="flex items-center justify-between p-4 mb-2 bg-white rounded-lg shadow">
       <div className="flex items-center">
@@ -18,7 +33,10 @@ const Task: React.FC<TaskProps> = ({ id, text, completed, onToggle, onDelete }) 
           className="w-4 h-4 mr-3 cursor-pointer"
         />
         <span className={`text-lg ${completed ? 'line-through text-gray-500' : 'text-gray-800'}`}>
-        <EditableSpan name={text}/>
+          <EditableSpan
+            name={text}
+            onChange={handleTextChange}
+          />
         </span>
       </div>
       <button
