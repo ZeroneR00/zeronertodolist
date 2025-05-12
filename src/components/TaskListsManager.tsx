@@ -35,7 +35,7 @@ const TaskListsManager: React.FC = () => {
       <h1 className="text-black text-4xl font-bold text-center mb-8">Менеджер списков задач</h1>
 
       <form onSubmit={handleAddTheme} className="mb-8">
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex items-center justify-between p-4 mb-2 bg-white rounded-lg shadow">
           <input
             type="text"
             value={newListName}
