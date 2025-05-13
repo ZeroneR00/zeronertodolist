@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import Task from './Task';
 import { FilterType, TodoListProps } from '../types/taskTypes';
 
+
+
 interface ExtendedTodoListProps extends TodoListProps {
   onUpdateTaskText?: (taskId: string, newText: string) => void;
 }
