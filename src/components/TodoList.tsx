@@ -15,13 +15,13 @@ interface ExtendedTodoListProps extends TodoListProps {
   onUpdateTaskText?: (taskId: string, newText: string) => void;
 }
 
-const TodoList: React.FC<ExtendedTodoListProps> = ({ 
-  tasks, 
-  listId, 
-  onAddTask, 
-  onToggleTask, 
+const TodoList: React.FC<ExtendedTodoListProps> = ({
+  tasks,
+  listId,
+  onAddTask,
+  onToggleTask,
   onDeleteTask,
-  onUpdateTaskText 
+  onUpdateTaskText
 }) => {
   const [inputText, setInputText] = useState('');
 
@@ -45,23 +45,37 @@ const TodoList: React.FC<ExtendedTodoListProps> = ({
 
   return (
     <div>
-      <form onSubmit={handleAddTask} className="mb-6">
-        <div className="flex gap-2">
-          <input
-            type="text"
-            value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
-            placeholder="Добавить новую задачу..."
-            className="text-black flex-1 p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
-          />
-          <button
-            type="submit"
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
-            Добавить
-          </button>
-        </div>
-      </form>
+      <div>
+        <Accordion type="single" collapsible>
+          <AccordionItem value="item-1">
+            <AccordionTrigger>
+              <div>
+                Добавить таску
+              </div>
+            </AccordionTrigger>
+            <AccordionContent>
+              <form onSubmit={handleAddTask} className="mb-6">
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={inputText}
+                    onChange={(e) => setInputText(e.target.value)}
+                    placeholder="Добавить новую задачу..."
+                    className="text-black flex-1 p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+                  />
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                  >
+                    Добавить
+                  </button>
+                </div>
+              </form>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+
+      </div>
 
       <div className="space-y-2">
         {filteredTasks.length > 0 ? (
@@ -77,44 +91,41 @@ const TodoList: React.FC<ExtendedTodoListProps> = ({
           ))
         ) : (
           <p className="text-center py-4 text-gray-500">
-            {filter === 'all' 
-              ? 'Задач пока нет' 
-              : filter === 'completed' 
-                ? 'Нет выполненных задач' 
+            {filter === 'all'
+              ? 'Задач пока нет'
+              : filter === 'completed'
+                ? 'Нет выполненных задач'
                 : 'Нет активных задач'}
           </p>
         )}
       </div>
 
-       {/* Добавляем панель фильтров */}
-       <div className="flex justify-center space-x-2 mt-6">
+      {/* Добавляем панель фильтров */}
+      <div className="flex justify-center space-x-2 mt-6">
         <button
           onClick={() => setFilter('all')}
-          className={`px-3 py-1 text-sm rounded transition-colors ${
-            filter === 'all'
+          className={`px-3 py-1 text-sm rounded transition-colors ${filter === 'all'
             ? 'bg-blue-500 text-white'
             : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-          }`}
+            }`}
         >
           Все
         </button>
         <button
           onClick={() => setFilter('active')}
-          className={`px-3 py-1 text-sm rounded transition-colors ${
-            filter === 'active'
+          className={`px-3 py-1 text-sm rounded transition-colors ${filter === 'active'
             ? 'bg-blue-500 text-white'
             : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-          }`}
+            }`}
         >
           Активные
         </button>
         <button
           onClick={() => setFilter('completed')}
-          className={`px-3 py-1 text-sm rounded transition-colors ${
-            filter === 'completed'
+          className={`px-3 py-1 text-sm rounded transition-colors ${filter === 'completed'
             ? 'bg-blue-500 text-white'
             : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-          }`}
+            }`}
         >
           Выполненные
         </button>
@@ -122,12 +133,12 @@ const TodoList: React.FC<ExtendedTodoListProps> = ({
 
       {/* Счетчик задач */}
       <div className="mt-3 text-center text-sm text-gray-500">
-        Всего: {tasks.length} | 
-        Выполнено: {tasks.filter(task => task.completed).length} | 
+        Всего: {tasks.length} |
+        Выполнено: {tasks.filter(task => task.completed).length} |
         Осталось: {tasks.filter(task => !task.completed).length}
       </div>
     </div>
-    
+
   );
 };
 
