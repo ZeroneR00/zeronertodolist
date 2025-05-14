@@ -3,7 +3,12 @@
 import React, { useState } from 'react';
 import Task from './Task';
 import { FilterType, TodoListProps } from '../types/taskTypes';
-
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
 
 
 interface ExtendedTodoListProps extends TodoListProps {

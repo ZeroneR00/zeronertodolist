@@ -5,8 +5,15 @@ import React, { useState } from 'react';
 import { useTasksLists } from '@/hooks/useTaskLists';
 import TodoList from './TodoList';
 import EditableSpan from './EditableSpan';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion';
 import { Button } from './ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 
 const TaskListsManager: React.FC = () => {
   const {
@@ -36,16 +43,25 @@ const TaskListsManager: React.FC = () => {
     <div className="max-w-2xl mx-auto p-6">
       <h1 className="text-black text-4xl font-bold text-center mb-8">Менеджер списков задач</h1>
 
-      <Accordion type="single" collapsible>
-        <AccordionItem value="item-1">
-          <AccordionTrigger>
-            <div className="flex justify-center mb-5">
-              <span className="px-5 py-2 bg-blue-500 text-white rounded-md cursor-pointer inline-block hover:bg-blue-600">Добавить тему</span>
-            </div>
-          </AccordionTrigger>
-          <AccordionContent>
-            <form onSubmit={handleAddTheme} className="mb-8 flex flex-col grid ">
-              <div className="flex gap-2 flex items-center justify-between p-4 mb-2 bg-white rounded-lg shadow">
+      <Dialog>
+        <div className="flex justify-center mb-5">
+          <DialogTrigger asChild>
+            <button
+              type="button"
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            >
+              Добавить тему
+            </button>
+          </DialogTrigger>
+        </div>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Добавить тему</DialogTitle>
+            <DialogDescription>
+              Введите название новой темы
+            </DialogDescription>
+            <form onSubmit={handleAddTheme} className="mb-8 flex flex-col">
+              <div className="flex gap-2 items-center justify-between p-4 mb-2 bg-white rounded-lg shadow">
                 <input
                   type="text"
                   value={newListName}
@@ -53,20 +69,18 @@ const TaskListsManager: React.FC = () => {
                   placeholder="Название новой темы..."
                   className="text-black flex-1 p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
                 />
-
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                >
-                  Добавить тему
-                </button>
               </div>
+              <button
+                type="submit"
+                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              >
+                Создать
+              </button>
             </form>
-
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
-
+          </DialogHeader>
+          футер
+        </DialogContent>
+      </Dialog>
 
       <div className="space-y-12">
         {taskLists.map(list => (
