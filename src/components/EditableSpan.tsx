@@ -1,92 +1,55 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from 'react';
+import { useTheme } from '@/lib/ThemeContext';
 
 interface EditableSpanProps {
     name: string;
-    onChange?: (newValue: string) => void;
+    onChange: (newName: string) => void;
 }
 
 const EditableSpan: React.FC<EditableSpanProps> = ({ name, onChange }) => {
-    const [editMode, setEditMode] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
     const [value, setValue] = useState(name);
-    const inputRef = useRef<HTMLInputElement>(null);
+    const { theme } = useTheme();
 
-    // Активация режима редактирования
-    const activateEditMode = () => {
-        setEditMode(true);
+    const handleDoubleClick = () => {
+        setIsEditing(true);
     };
 
-    // Деактивация режима редактирования с сохранением изменений
-    const deactivateEditMode = () => {
-        setEditMode(false);
-        
-        // Вызываем функцию onChange, если она передана, для сохранения изменений
-        if (onChange && value !== name) {
-            onChange(value);
+    const handleBlur = () => {
+        setIsEditing(false);
+        if (value.trim() !== name) {
+            onChange(value.trim());
         }
     };
 
-    // Обработка нажатия Enter
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
-            deactivateEditMode();
+            handleBlur();
         }
     };
 
-    // Обработка клика вне input
-    const handleClickOutside = (event: MouseEvent) => {
-        if (
-            inputRef.current && 
-            !inputRef.current.contains(event.target as Node) && 
-            editMode
-        ) {
-            deactivateEditMode();
-        }
-    };
-
-    // Устанавливаем слушатель событий для клика вне элемента
-    useEffect(() => {
-        // Добавляем обработчик только когда input активен
-        if (editMode) {
-            document.addEventListener('mousedown', handleClickOutside);
-            
-            // Фокусируем input и устанавливаем курсор в конец текста
-            if (inputRef.current) {
-                inputRef.current.focus();
-                inputRef.current.setSelectionRange(value.length, value.length);
-            }
-        }
-        
-        // Очищаем обработчик при размонтировании или деактивации режима редактирования
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, [editMode]);
-
-    // Синхронизируем локальное состояние, если prop name изменился
-    useEffect(() => {
-        setValue(name);
-    }, [name]);
-
-    return (
-        <span>
-            {!editMode ? (
-                <span 
-                    onDoubleClick={activateEditMode}
-                    className="cursor-pointer hover:bg-gray-100 px-1 py-0.5 rounded"
-                >
-                    {value}
-                </span>
-            ) : (
-                <input
-                    ref={inputRef}
-                    type="text"
-                    value={value}
-                    onChange={(e) => setValue(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                    className="border border-gray-300 rounded px-2 py-0.5 focus:outline-none focus:border-blue-500"
-                    style={{ width: `${Math.max(value.length * 8 + 20, 100)}px` }}
-                />
-            )}
+    return isEditing ? (
+        <input
+            type="text"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            onBlur={handleBlur}
+            onKeyDown={handleKeyDown}
+            autoFocus
+            className="border rounded px-1 focus:outline-none transition-colors duration-200"
+            style={{
+                backgroundColor: theme.background.primary,
+                color: theme.text.primary,
+                borderColor: theme.todoList.border
+            }}
+        />
+    ) : (
+        <span
+            onDoubleClick={handleDoubleClick}
+            className="cursor-pointer transition-colors duration-200"
+            style={{ color: theme.text.primary }}
+        >
+            {name}
         </span>
     );
 };
