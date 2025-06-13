@@ -14,6 +14,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import Header from './Header';
+import { useTheme } from '@/lib/ThemeContext';
 
 const TaskListsManager: React.FC = () => {
   const {
@@ -28,7 +29,7 @@ const TaskListsManager: React.FC = () => {
   } = useTasksLists();
 
   const [newListName, setNewListName] = useState('');
-  const [isDarkTheme, setIsDarkTheme] = useState(false);
+  const { theme } = useTheme();
 
   const handleAddTheme = (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,17 +42,25 @@ const TaskListsManager: React.FC = () => {
   }
 
   return (
-    <div>
-      <Header isDarkTheme={isDarkTheme} onThemeChange={setIsDarkTheme}/>
+    <main className={`min-h-screen py-8 pt-0 transition-colors duration-200`} 
+          style={{ backgroundColor: theme.background.primary }}>
+      <Header />
       <div className="max-w-2xl mx-auto p-6">
-        <h1 className="text-black text-4xl font-bold text-center mb-8">Менеджер списков задач</h1>
+        <h1 className={`text-4xl font-bold text-center mb-8 transition-colors duration-200`}
+            style={{ color: theme.text.primary }}>
+          Менеджер списков задач
+        </h1>
 
         <Dialog>
           <div className="flex justify-center mb-5">
             <DialogTrigger asChild>
               <button
                 type="button"
-                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                className="px-4 py-2 rounded transition-all duration-200 hover:opacity-90 hover:scale-105 active:scale-95"
+                style={{
+                  backgroundColor: theme.accent.primary,
+                  color: theme.text.white
+                }}
               >
                 Добавить тему
               </button>
@@ -64,39 +73,55 @@ const TaskListsManager: React.FC = () => {
                 Введите название новой темы
               </DialogDescription>
               <form onSubmit={handleAddTheme} className="mb-8 flex flex-col">
-                <div className="flex gap-2 items-center justify-between p-4 mb-2 bg-white rounded-lg shadow">
+                <div className="flex gap-2 items-center justify-between p-4 mb-2 rounded-lg shadow transition-colors duration-200"
+                     style={{ backgroundColor: theme.background.secondary }}>
                   <input
                     type="text"
                     value={newListName}
                     onChange={(e) => setNewListName(e.target.value)}
                     placeholder="Название новой темы..."
-                    className="text-black flex-1 p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+                    className="flex-1 p-2 border rounded focus:outline-none transition-colors duration-200"
+                    style={{
+                      backgroundColor: theme.background.primary,
+                      color: theme.text.primary,
+                      borderColor: theme.todoList.border
+                    }}
                   />
                 </div>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                  className="px-4 py-2 rounded transition-all duration-200 hover:opacity-90 hover:scale-105 active:scale-95"
+                  style={{
+                    backgroundColor: theme.accent.primary,
+                    color: theme.text.white,
+                  }}
                 >
                   Создать
                 </button>
               </form>
             </DialogHeader>
-            футер
           </DialogContent>
         </Dialog>
 
         <div className="space-y-12">
           {taskLists.map(list => (
-            <div key={list.id} className="bg-gray-50 p-6 rounded-lg shadow">
+            <div key={list.id} 
+                 className="p-6 rounded-lg shadow transition-colors duration-200"
+                 style={{ backgroundColor: theme.todoList.background }}>
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-black text-2xl font-bold">
+                <h2 className="text-2xl font-bold transition-colors duration-200"
+                    style={{ color: theme.text.primary }}>
                   <EditableSpan
                     name={list.name}
                     onChange={(newName) => updateName(list.id, newName)} />
                 </h2>
                 <button
                   onClick={() => deleteTaskList(list.id)}
-                  className="px-3 py-1 text-sm text-white bg-red-500 rounded hover:bg-red-600"
+                  className="px-3 py-1 text-sm rounded transition-all duration-200 hover:opacity-90 hover:scale-105 active:scale-95"
+                  style={{
+                    backgroundColor: theme.accent.error,
+                    color: theme.text.white,
+                  }}
                 >
                   Удалить тему
                 </button>
@@ -114,13 +139,17 @@ const TaskListsManager: React.FC = () => {
           ))}
 
           {taskLists.length === 0 && (
-            <div className="text-center p-10 text-gray-500 bg-gray-50 rounded-lg">
+            <div className="text-center p-10 rounded-lg transition-colors duration-200"
+                 style={{
+                   backgroundColor: theme.background.secondary,
+                   color: theme.text.secondary
+                 }}>
               Нет списков задач. Создайте новую тему.
             </div>
           )}
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 
