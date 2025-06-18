@@ -9,7 +9,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
-
+import { useTheme } from '@/lib/ThemeContext';
 
 interface ExtendedTodoListProps extends TodoListProps {
   onUpdateTaskText?: (taskId: string, newText: string) => void;
@@ -24,6 +24,7 @@ const TodoList: React.FC<ExtendedTodoListProps> = ({
   onUpdateTaskText
 }) => {
   const [inputText, setInputText] = useState('');
+  const { theme } = useTheme();
 
   const handleAddTask = (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,10 +49,18 @@ const TodoList: React.FC<ExtendedTodoListProps> = ({
       <div>
         <Accordion type="single" collapsible>
           <AccordionItem value="item-1">
-            <AccordionTrigger>
-              <div>
+            <AccordionTrigger className="no-underline hover:no-underline focus:no-underline">
+              <span
+                className="px-4 py-2 rounded transition-all duration-200 text-decoration-none no-underline hover:no-underline focus:no-underline hover:opacity-90 hover:scale-105 active:scale-95 cursor-pointer"
+                style={{
+                  backgroundColor: theme.accent.primary,
+                  color: theme.text.white,
+                  display: 'inline-block',
+                  userSelect: 'none',
+                }}
+              >
                 Добавить таску
-              </div>
+              </span>
             </AccordionTrigger>
             <AccordionContent>
               <form onSubmit={handleAddTask} className="mb-6">
@@ -61,11 +70,20 @@ const TodoList: React.FC<ExtendedTodoListProps> = ({
                     value={inputText}
                     onChange={(e) => setInputText(e.target.value)}
                     placeholder="Добавить новую задачу..."
-                    className="text-black flex-1 p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+                    className="flex-1 p-2 border rounded focus:outline-none transition-colors duration-200"
+                    style={{
+                      backgroundColor: theme.background.primary,
+                      color: theme.text.primary,
+                      borderColor: theme.todoList.border
+                    }}
                   />
                   <button
                     type="submit"
-                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                    className="px-4 py-2 rounded transition-all duration-200 hover:opacity-90 hover:scale-105 active:scale-95"
+                    style={{
+                      backgroundColor: theme.accent.primary,
+                      color: theme.text.white,
+                    }}
                   >
                     Добавить
                   </button>
@@ -74,7 +92,6 @@ const TodoList: React.FC<ExtendedTodoListProps> = ({
             </AccordionContent>
           </AccordionItem>
         </Accordion>
-
       </div>
 
       <div className="space-y-2">
@@ -90,7 +107,8 @@ const TodoList: React.FC<ExtendedTodoListProps> = ({
             />
           ))
         ) : (
-          <p className="text-center py-4 text-gray-500">
+          <p className="text-center py-4 transition-colors duration-200"
+             style={{ color: theme.text.secondary }}>
             {filter === 'all'
               ? 'Задач пока нет'
               : filter === 'completed'
@@ -100,45 +118,51 @@ const TodoList: React.FC<ExtendedTodoListProps> = ({
         )}
       </div>
 
-      {/* Добавляем панель фильтров */}
+      {/* Панель фильтров */}
       <div className="flex justify-center space-x-2 mt-6">
         <button
           onClick={() => setFilter('all')}
-          className={`px-3 py-1 text-sm rounded transition-colors ${filter === 'all'
-            ? 'bg-blue-500 text-white'
-            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-            }`}
+          className={`px-3 py-1 text-sm rounded transition-all duration-200 hover:scale-105 active:scale-95`}
+          style={{
+            backgroundColor: filter === 'all' ? theme.accent.primary : 'transparent',
+            color: filter === 'all' ? theme.text.white : theme.text.primary,
+            border: filter === 'all' ? 'none' : `1px solid ${theme.todoList.border}`,
+          }}
         >
           Все
         </button>
         <button
           onClick={() => setFilter('active')}
-          className={`px-3 py-1 text-sm rounded transition-colors ${filter === 'active'
-            ? 'bg-blue-500 text-white'
-            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-            }`}
+          className={`px-3 py-1 text-sm rounded transition-all duration-200 hover:scale-105 active:scale-95`}
+          style={{
+            backgroundColor: filter === 'active' ? theme.accent.primary : 'transparent',
+            color: filter === 'active' ? theme.text.white : theme.text.primary,
+            border: filter === 'active' ? 'none' : `1px solid ${theme.todoList.border}`,
+          }}
         >
           Активные
         </button>
         <button
           onClick={() => setFilter('completed')}
-          className={`px-3 py-1 text-sm rounded transition-colors ${filter === 'completed'
-            ? 'bg-blue-500 text-white'
-            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-            }`}
+          className={`px-3 py-1 text-sm rounded transition-all duration-200 hover:scale-105 active:scale-95`}
+          style={{
+            backgroundColor: filter === 'completed' ? theme.accent.primary : 'transparent',
+            color: filter === 'completed' ? theme.text.white : theme.text.primary,
+            border: filter === 'completed' ? 'none' : `1px solid ${theme.todoList.border}`,
+          }}
         >
           Выполненные
         </button>
       </div>
 
       {/* Счетчик задач */}
-      <div className="mt-3 text-center text-sm text-gray-500">
+      <div className="mt-3 text-center text-sm transition-colors duration-200"
+           style={{ color: theme.text.secondary }}>
         Всего: {tasks.length} |
         Выполнено: {tasks.filter(task => task.completed).length} |
         Осталось: {tasks.filter(task => !task.completed).length}
       </div>
     </div>
-
   );
 };
 
