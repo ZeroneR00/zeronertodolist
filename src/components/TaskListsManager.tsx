@@ -42,12 +42,12 @@ const TaskListsManager: React.FC = () => {
   }
 
   return (
-    <main className={`min-h-screen py-8 pt-0 transition-colors duration-200`} 
-          style={{ backgroundColor: theme.background.primary }}>
+    <main className={`min-h-screen py-8 pt-0 transition-colors duration-200`}
+      style={{ backgroundColor: theme.background.primary }}>
       <Header />
       <div className="max-w-2xl mx-auto p-6">
         <h1 className={`text-4xl font-bold text-center mb-8 transition-colors duration-200`}
-            style={{ color: theme.text.primary }}>
+          style={{ color: theme.text.primary }}>
           Менеджер списков задач
         </h1>
 
@@ -66,7 +66,12 @@ const TaskListsManager: React.FC = () => {
               </button>
             </DialogTrigger>
           </div>
-          <DialogContent>
+          <DialogContent className=''
+            style={{
+              backgroundColor: theme.background.secondary,
+              color: theme.text.primary,
+              borderColor: theme.todoList.border
+            }} >
             <DialogHeader>
               <DialogTitle>Добавить тему</DialogTitle>
               <DialogDescription>
@@ -74,7 +79,7 @@ const TaskListsManager: React.FC = () => {
               </DialogDescription>
               <form onSubmit={handleAddTheme} className="mb-8 flex flex-col">
                 <div className="flex gap-2 items-center justify-between p-4 mb-2 rounded-lg shadow transition-colors duration-200"
-                     style={{ backgroundColor: theme.background.secondary }}>
+                  style={{ backgroundColor: theme.background.secondary }}>
                   <input
                     type="text"
                     value={newListName}
@@ -105,12 +110,12 @@ const TaskListsManager: React.FC = () => {
 
         <div className="space-y-12">
           {taskLists.map(list => (
-            <div key={list.id} 
-                 className="p-6 rounded-lg shadow transition-colors duration-200"
-                 style={{ backgroundColor: theme.todoList.background }}>
+            <div key={list.id}
+              className="p-6 rounded-lg shadow transition-colors duration-200"
+              style={{ backgroundColor: theme.todoList.background }}>
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-2xl font-bold transition-colors duration-200"
-                    style={{ color: theme.text.primary }}>
+                  style={{ color: theme.text.primary }}>
                   <EditableSpan
                     name={list.name}
                     onChange={(newName) => updateName(list.id, newName)} />
@@ -140,10 +145,10 @@ const TaskListsManager: React.FC = () => {
 
           {taskLists.length === 0 && (
             <div className="text-center p-10 rounded-lg transition-colors duration-200"
-                 style={{
-                   backgroundColor: theme.background.secondary,
-                   color: theme.text.secondary
-                 }}>
+              style={{
+                backgroundColor: theme.background.secondary,
+                color: theme.text.secondary
+              }}>
               Нет списков задач. Создайте новую тему.
             </div>
           )}
