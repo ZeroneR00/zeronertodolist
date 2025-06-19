@@ -68,18 +68,18 @@ const TaskListsManager: React.FC = () => {
           </div>
           <DialogContent className=''
             style={{
-              backgroundColor: theme.background.secondary,
+              backgroundColor: theme.background.primary,
               color: theme.text.primary,
               borderColor: theme.todoList.border
             }} >
             <DialogHeader>
               <DialogTitle>Добавить тему</DialogTitle>
-              <DialogDescription>
+              <DialogDescription  >
                 Введите название новой темы
               </DialogDescription>
               <form onSubmit={handleAddTheme} className="mb-8 flex flex-col">
                 <div className="flex gap-2 items-center justify-between p-4 mb-2 rounded-lg shadow transition-colors duration-200"
-                  style={{ backgroundColor: theme.background.secondary }}>
+                  style={{ backgroundColor: theme.background.primary}}>
                   <input
                     type="text"
                     value={newListName}
