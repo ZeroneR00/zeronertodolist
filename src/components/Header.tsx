@@ -67,25 +67,45 @@ const Header: React.FC = () => {
                         {/* Войти */}
 
                         <Sheet>
-                            <SheetTrigger>
+                            <SheetTrigger asChild>
                                 <span className="block w-full text-left px-3 py-2 rounded-md text-base font-medium transition-all duration-200 hover:text-accent-primary hover:scale-105 active:scale-95"
                                     style={{ color: theme.text.primary }}>
                                     Войти
                                 </span>
                             </SheetTrigger>
-                            <SheetContent
-                                style={{
-                                    backgroundColor: theme.background.primary,
-                                    color: theme.text.primary,
-                                    borderColor: theme.todoList.border
-                                }} >
+                            <SheetContent style={{
+                                backgroundColor: theme.background.primary,
+                                color: theme.text.primary,
+                                borderColor: theme.todoList.border
+                            }} >
                                 <SheetHeader>
-                                    <SheetTitle style={{ color: theme.text.primary }}>Are you absolutely sure?</SheetTitle>
-                                    <SheetDescription style={{ color: theme.text.tertiary }}>
-                                        This action cannot be undone. This will permanently delete your account
-                                        and remove your data from our servers.
+                                    <SheetTitle style={{ color: theme.text.primary }} >Edit profile</SheetTitle>
+                                    <SheetDescription style={{ color: theme.text.tertiary }} >
+                                        Make changes to your profile here. Click save when you&apos;re done.
                                     </SheetDescription>
                                 </SheetHeader>
+                                <div className="grid flex-1 auto-rows-min gap-6 px-4">
+                                    <div className="grid gap-3">
+                                        <Label htmlFor="sheet-demo-name">Name</Label>
+                                        <Input id="sheet-demo-name" defaultValue="Pedro Duarte" />
+                                    </div>
+                                    <div className="grid gap-3">
+                                        <Label htmlFor="sheet-demo-username">Username</Label>
+                                        <Input id="sheet-demo-username" defaultValue="@peduarte" />
+                                    </div>
+                                </div>
+                                <SheetFooter>
+                                    <Button type="submit" style={{
+                                            backgroundColor: theme.accent.primary,
+                                            color: theme.text.white
+                                        }}>Войти с помощью яиц</Button>
+                                    <SheetClose asChild>
+                                        <Button variant="outline"  style={{
+                                            backgroundColor: theme.accent.warning,
+                                            color: theme.text.white
+                                        }}>Закрыть яйца</Button>
+                                    </SheetClose>
+                                </SheetFooter>
                             </SheetContent>
                         </Sheet>
 
@@ -112,28 +132,35 @@ const Header: React.FC = () => {
                                 borderColor: theme.todoList.border
                             }} >
                                 <SheetHeader>
-                                    <SheetTitle style={{ color: theme.text.primary }} >Edit profile</SheetTitle>
+                                    <SheetTitle style={{ color: theme.text.primary }} >Регистрация</SheetTitle>
                                     <SheetDescription style={{ color: theme.text.tertiary }} >
-                                        Make changes to your profile here. Click save when you&apos;re done.
+                                         Убедитесь что у вас есть яйца, перед тем как зарегистрироваться
                                     </SheetDescription>
                                 </SheetHeader>
                                 <div className="grid flex-1 auto-rows-min gap-6 px-4">
                                     <div className="grid gap-3">
-                                        <Label htmlFor="sheet-demo-name">Name</Label>
+                                        <Label htmlFor="sheet-demo-name">Логин</Label>
                                         <Input id="sheet-demo-name" defaultValue="Pedro Duarte" />
                                     </div>
                                     <div className="grid gap-3">
-                                        <Label htmlFor="sheet-demo-username">Username</Label>
+                                        <Label htmlFor="sheet-demo-username">Пароль</Label>
                                         <Input id="sheet-demo-username" defaultValue="@peduarte" />
+                                    </div>
+                                    <div className="grid gap-3">
+                                        <Label htmlFor="sheet-demo-username">Имейл</Label>
+                                        <Input id="sheet-demo-username" defaultValue="@" />
                                     </div>
                                 </div>
                                 <SheetFooter>
-                                    <Button type="submit">Save changes</Button>
-                                    <SheetClose asChild>
-                                        <Button variant="outline" style={{
+                                    <Button type="submit" style={{
                                             backgroundColor: theme.accent.primary,
                                             color: theme.text.white
-                                        }}>Close</Button>
+                                        }}>Заригистрировать яйца</Button>
+                                    <SheetClose asChild>
+                                        <Button variant="outline"  style={{
+                                            backgroundColor: theme.accent.warning,
+                                            color: theme.text.white
+                                        }}>Отменить регистрацию яиц</Button>
                                     </SheetClose>
                                 </SheetFooter>
                             </SheetContent>
