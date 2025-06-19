@@ -147,8 +147,8 @@ const Header: React.FC = () => {
                                         <Input id="sheet-demo-username" defaultValue="@peduarte" />
                                     </div>
                                     <div className="grid gap-3">
-                                        <Label htmlFor="sheet-demo-username">Имейл</Label>
-                                        <Input id="sheet-demo-username" defaultValue="@" />
+                                    <Label htmlFor="email">Email</Label>
+                                    <Input type="email" id="email" placeholder="Email" />
                                     </div>
                                 </div>
                                 <SheetFooter>
