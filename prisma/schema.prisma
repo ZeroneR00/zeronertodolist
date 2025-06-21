@@ -18,3 +18,7 @@ model User {
 
   @@map("users")
 }
+
+model Todolist {
+  id String @id @default(cuid())
+}
