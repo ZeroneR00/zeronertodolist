@@ -88,7 +88,7 @@ const Header: React.FC = () => {
     };
 
     return (
-        <header className="w-full shadow-md transition-colors duration-200"
+        <header className="w-full shadow-md transition-colors duration-200" 
             style={{ backgroundColor: theme.background.secondary }}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
@@ -281,5 +281,7 @@ const Header: React.FC = () => {
         </header>
     );
 };
+
+
 
 export default Header;
